@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using DataContext.Data;
 using DataContext.Models;
@@ -23,7 +22,7 @@ namespace Core.Services
 
         public Task<List<Exercise>> GetExercisesAsync()
         {
-            return _context.Exercises.ToListAsync();
+            return _context.Exercises.Include(e => e.Category).ToListAsync();
         }
 
         public Task<Exercise> CreateAsync(Exercise exercise)

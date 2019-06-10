@@ -8,16 +8,16 @@ namespace DataContext.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Exercises",
+                name: "ExerciseCategory",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Exercises", x => x.Id);
+                    table.PrimaryKey("PK_ExerciseCategory", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -26,7 +26,7 @@ namespace DataContext.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -39,11 +39,32 @@ namespace DataContext.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    Name = table.Column<string>(nullable: true)
+                    Name = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Workshops", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Exercises",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:AutoIncrement", true),
+                    Name = table.Column<string>(nullable: false),
+                    Description = table.Column<string>(nullable: false),
+                    CategoryId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Exercises", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Exercises_ExerciseCategory_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "ExerciseCategory",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -52,8 +73,8 @@ namespace DataContext.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    Name = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: true)
+                    Name = table.Column<string>(nullable: false),
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -63,7 +84,7 @@ namespace DataContext.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -72,8 +93,7 @@ namespace DataContext.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:AutoIncrement", true),
-                    Name = table.Column<string>(nullable: true),
-                    UserId = table.Column<int>(nullable: true)
+                    UserId = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,7 +103,7 @@ namespace DataContext.Migrations
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -116,12 +136,11 @@ namespace DataContext.Migrations
                 {
                     TrainingScheduleId = table.Column<int>(nullable: false),
                     ExerciseId = table.Column<int>(nullable: false),
-                    DateTime = table.Column<DateTime>(nullable: false),
-                    Sets = table.Column<string>(nullable: true)
+                    Sets = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TrainingScheduleExercise", x => new { x.ExerciseId, x.TrainingScheduleId, x.DateTime });
+                    table.PrimaryKey("PK_TrainingScheduleExercise", x => new { x.ExerciseId, x.TrainingScheduleId });
                     table.ForeignKey(
                         name: "FK_TrainingScheduleExercise_Exercises_ExerciseId",
                         column: x => x.ExerciseId,
@@ -142,11 +161,12 @@ namespace DataContext.Migrations
                 {
                     WorkoutId = table.Column<int>(nullable: false),
                     ExerciseId = table.Column<int>(nullable: false),
-                    Sets = table.Column<string>(nullable: true)
+                    DateTime = table.Column<DateTime>(nullable: false),
+                    Sets = table.Column<string>(nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_WorkoutExercise", x => new { x.WorkoutId, x.ExerciseId });
+                    table.PrimaryKey("PK_WorkoutExercise", x => new { x.WorkoutId, x.ExerciseId, x.DateTime });
                     table.ForeignKey(
                         name: "FK_WorkoutExercise_Exercises_ExerciseId",
                         column: x => x.ExerciseId,
@@ -160,6 +180,11 @@ namespace DataContext.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Exercises_CategoryId",
+                table: "Exercises",
+                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TrainingScheduleExercise_TrainingScheduleId",
@@ -212,6 +237,9 @@ namespace DataContext.Migrations
 
             migrationBuilder.DropTable(
                 name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "ExerciseCategory");
         }
     }
 }

@@ -1,15 +1,17 @@
 using DataContext.Models;
+using DataContext.Models.Dto;
 using GraphQL.Types;
 
 namespace Core.Schema
 {
-    public class ExerciseType : ObjectGraphType<Exercise>
+    public class TrainingScheduleExerciseType : ObjectGraphType<TrainingScheduleExerciseDto>
     {
-        public ExerciseType()
+        public TrainingScheduleExerciseType()
         {
             Field(o => o.Id);
             Field(o => o.Name);
             Field(o => o.Description);
+            Field(o => o.Sets);
             Field<ExerciseCategoryType>("category", resolve: context => context.Source.Category);
         }
     }

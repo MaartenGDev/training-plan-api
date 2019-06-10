@@ -22,6 +22,9 @@ namespace DataContext.Data
             modelBuilder.Entity<Exercise>()
                 .HasKey(e => e.Id);
             
+            modelBuilder.Entity<ExerciseCategory>()
+                .HasKey(e => e.Id);
+            
             modelBuilder.Entity<Workshop>()
                 .HasKey(w => w.Id);
             
@@ -32,10 +35,10 @@ namespace DataContext.Data
                 .HasKey(w => w.Id);       
             
             modelBuilder.Entity<TrainingScheduleExercise>()
-                .HasKey(w => new {w.ExerciseId, w.TrainingScheduleId, w.DateTime});
+                .HasKey(w => new {w.ExerciseId, w.TrainingScheduleId});
             
             modelBuilder.Entity<WorkoutExercise>()
-                .HasKey(w => new {w.WorkoutId, w.ExerciseId});
+                .HasKey(w => new {w.WorkoutId, w.ExerciseId, w.DateTime});
             
             modelBuilder.Entity<WorkshopExercise>()
                 .HasKey(w => new {w.WorkshopId, w.ExerciseId});

@@ -34,16 +34,25 @@ namespace Web
             services.AddTransient<IDependencyResolver>(
                 c => new FuncDependencyResolver(type => c.GetRequiredService(type)));
             
+            // Services
+            services.AddTransient<WorkoutService>();
+            services.AddTransient<WorkshopService>();
             services.AddTransient<UserService>();
             services.AddTransient<ExerciseService>();
             services.AddTransient<TrainingScheduleService>();
+            
+            // Types
             services.AddTransient<UserType>();
+            services.AddTransient<ExerciseCategoryType>();
             services.AddTransient<ExerciseType>();
             services.AddTransient<ExerciseCreateInputType>();
-            
+            services.AddTransient<TrainingScheduleExerciseType>();
             services.AddTransient<TrainingScheduleType>();
+            services.AddTransient<WorkoutExerciseType>();
+            services.AddTransient<WorkshopType>();
+            services.AddTransient<WorkoutType>();
             
-      
+            // Schema setup
             services.AddTransient<SchemaQuery>();
             services.AddTransient<SchemaMutation>();
             

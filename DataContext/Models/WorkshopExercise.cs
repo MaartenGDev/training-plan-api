@@ -1,5 +1,3 @@
-using System.Collections.Generic;
-
 namespace DataContext.Models
 {
     public class WorkshopExercise

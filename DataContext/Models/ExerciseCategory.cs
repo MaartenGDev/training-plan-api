@@ -1,8 +1,9 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace DataContext.Models
 {
-    public class User
+    public class ExerciseCategory
     {
         public int Id { get; set; }
         [Required]

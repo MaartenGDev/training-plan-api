@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Core.Schema;
 using DataContext.Data;
 using DataContext.Models;
+using DataContext.Models.Dto;
 using Microsoft.EntityFrameworkCore;
 
 namespace Core.Services
@@ -24,13 +26,14 @@ namespace Core.Services
                 .ToListAsync();
         }
         
-        public IEnumerable<Exercise> GetExercisesForTrainingScheduleByIdAsync(int trainingScheduleId)
+        public IEnumerable<TrainingScheduleExerciseDto> GetExercisesForTrainingScheduleByIdAsync(int trainingScheduleId)
         {
             return _context.TrainingSchedules
                 .Include(x => x.TrainingScheduleExercises)
                 .ThenInclude(x => x.Exercise)
+                .ThenInclude(e => e.Category)
                 .Single(e => e.Id == trainingScheduleId)
-                .TrainingScheduleExercises.Select(x => x.Exercise)
+                .TrainingScheduleExercises.Select(x => new TrainingScheduleExerciseDto(x))
                 .ToList();
         }
         

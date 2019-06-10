@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataContext.Migrations
 {
     [DbContext(typeof(TrainingPlanContext))]
-    [Migration("20190610195615_InitialCreate")]
+    [Migration("20190610221603_InitialCreate")]
     partial class InitialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -23,11 +23,32 @@ namespace DataContext.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<int>("CategoryId");
+
+                    b.Property<string>("Description")
+                        .IsRequired();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Exercises");
+                });
+
+            modelBuilder.Entity("DataContext.Models.ExerciseCategory", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("Name")
+                        .IsRequired();
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ExerciseCategory");
                 });
 
             modelBuilder.Entity("DataContext.Models.TrainingSchedule", b =>
@@ -35,9 +56,10 @@ namespace DataContext.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.Property<int?>("UserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -52,11 +74,10 @@ namespace DataContext.Migrations
 
                     b.Property<int>("TrainingScheduleId");
 
-                    b.Property<DateTime>("DateTime");
+                    b.Property<string>("Sets")
+                        .IsRequired();
 
-                    b.Property<string>("Sets");
-
-                    b.HasKey("ExerciseId", "TrainingScheduleId", "DateTime");
+                    b.HasKey("ExerciseId", "TrainingScheduleId");
 
                     b.HasIndex("TrainingScheduleId");
 
@@ -68,7 +89,8 @@ namespace DataContext.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -80,9 +102,7 @@ namespace DataContext.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
-
-                    b.Property<int?>("UserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
 
@@ -97,9 +117,12 @@ namespace DataContext.Migrations
 
                     b.Property<int>("ExerciseId");
 
-                    b.Property<string>("Sets");
+                    b.Property<DateTime>("DateTime");
 
-                    b.HasKey("WorkoutId", "ExerciseId");
+                    b.Property<string>("Sets")
+                        .IsRequired();
+
+                    b.HasKey("WorkoutId", "ExerciseId", "DateTime");
 
                     b.HasIndex("ExerciseId");
 
@@ -111,7 +134,8 @@ namespace DataContext.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<string>("Name");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
                     b.HasKey("Id");
 
@@ -131,11 +155,20 @@ namespace DataContext.Migrations
                     b.ToTable("WorkshopExercise");
                 });
 
+            modelBuilder.Entity("DataContext.Models.Exercise", b =>
+                {
+                    b.HasOne("DataContext.Models.ExerciseCategory", "Category")
+                        .WithMany()
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
             modelBuilder.Entity("DataContext.Models.TrainingSchedule", b =>
                 {
                     b.HasOne("DataContext.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DataContext.Models.TrainingScheduleExercise", b =>
@@ -146,7 +179,7 @@ namespace DataContext.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataContext.Models.TrainingSchedule", "TrainingSchedule")
-                        .WithMany("Exercises")
+                        .WithMany("TrainingScheduleExercises")
                         .HasForeignKey("TrainingScheduleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -155,7 +188,8 @@ namespace DataContext.Migrations
                 {
                     b.HasOne("DataContext.Models.User", "User")
                         .WithMany()
-                        .HasForeignKey("UserId");
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("DataContext.Models.WorkoutExercise", b =>
@@ -166,7 +200,7 @@ namespace DataContext.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("DataContext.Models.Workout", "Workout")
-                        .WithMany("Exercices")
+                        .WithMany("Exercises")
                         .HasForeignKey("WorkoutId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
