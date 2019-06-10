@@ -1,10 +1,8 @@
-﻿using System;
-using Core.Schema;
+﻿using Core.Schema;
 using Core.Schema.Data;
 using Core.Services;
 using DataContext.Data;
 using GraphQL;
-using GraphQL.Http;
 using GraphQL.Server;
 using GraphQL.Server.Ui.GraphiQL;
 using GraphQL.Server.Ui.Playground;
@@ -33,14 +31,24 @@ namespace Web
             services.AddDbContext<TrainingPlanContext>(options =>
                 options.UseMySQL(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddTransient<IDependencyResolver>(
+                c => new FuncDependencyResolver(type => c.GetRequiredService(type)));
+            
+            services.AddTransient<UserService>();
             services.AddTransient<ExerciseService>();
+            services.AddTransient<TrainingScheduleService>();
+            services.AddTransient<UserType>();
             services.AddTransient<ExerciseType>();
             services.AddTransient<ExerciseCreateInputType>();
+            
+            services.AddTransient<TrainingScheduleType>();
+            
+      
             services.AddTransient<SchemaQuery>();
             services.AddTransient<SchemaMutation>();
+            
             services.AddTransient<TrainingPlanSchema>();
-            services.AddSingleton<IDependencyResolver>(
-                c => new FuncDependencyResolver(type => c.GetRequiredService(type)));
+     
 
             services.AddGraphQL(options =>
                 {

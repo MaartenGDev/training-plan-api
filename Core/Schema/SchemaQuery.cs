@@ -6,7 +6,7 @@ namespace Core.Schema
 {
     public class SchemaQuery : ObjectGraphType<object>
     {
-        public SchemaQuery(ExerciseService exercises)
+        public SchemaQuery(ExerciseService exercises, TrainingScheduleService trainingScheduleService)
         {
             Name = "Query";
             Field<ListGraphType<ExerciseType>>(
@@ -14,15 +14,11 @@ namespace Core.Schema
                 resolve: context => exercises.GetExercisesAsync()
             );
 
-            FieldAsync<ExerciseType>(
-                "orderById",
-                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<StringGraphType>> {Name="exerciseId"}),
-                resolve: async context => {
-                    return await context.TryAsyncResolve(
-                        async c=> await exercises.GetExercisesByIdAsync(c.GetArgument<int>("exerciseId"))
-                    );
-                }
+            Field<ListGraphType<TrainingScheduleType>>(
+                "trainingSchedules",
+                resolve: context => trainingScheduleService.GetTrainingSchedulesAsync()
             );
+            
         }
     }
 }
