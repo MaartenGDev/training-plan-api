@@ -59,7 +59,7 @@ namespace Web
             services.AddTransient<TrainingPlanSchema>();
      
 
-            services.AddGraphQL(options =>
+            services.AddGraphQL(options =>    
                 {
                     options.EnableMetrics = true;
                     options.ExposeExceptions = true;

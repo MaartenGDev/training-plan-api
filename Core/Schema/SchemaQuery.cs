@@ -1,4 +1,3 @@
-using System;
 using Core.Services;
 using GraphQL.Types;
 

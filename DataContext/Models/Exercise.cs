@@ -11,6 +11,8 @@ namespace DataContext.Models
         [Required]
         public string Description { get; set; }
         [Required]
+        public string ImagePath { get; set; }
+        [Required]
         public ExerciseCategory Category { get; set; }
         public List<WorkoutExercise> Workouts { get; set; }
         public List<WorkshopExercise> Workshops { get; set; }
