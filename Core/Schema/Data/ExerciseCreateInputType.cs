@@ -8,7 +8,6 @@ namespace Core.Schema.Data
         public ExerciseCreateInputType()
         {
             Name = "ExerciseInput";
-            Field<NonNullGraphType<IntGraphType>>("id");
             Field<NonNullGraphType<StringGraphType>>("name");
         }
     }

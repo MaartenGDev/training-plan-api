@@ -42,7 +42,7 @@ namespace Core.Services
         public Task<TrainingSchedule> CreateAsync(TrainingSchedule trainingSchedule)
         {
             _context.TrainingSchedules.Add(trainingSchedule);
-            _context.SaveChangesAsync();
+            _context.SaveChanges();
 
             return Task.FromResult(trainingSchedule);
         }

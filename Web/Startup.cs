@@ -45,12 +45,18 @@ namespace Web
             services.AddTransient<UserType>();
             services.AddTransient<ExerciseCategoryType>();
             services.AddTransient<ExerciseType>();
-            services.AddTransient<ExerciseCreateInputType>();
             services.AddTransient<TrainingScheduleExerciseType>();
             services.AddTransient<TrainingScheduleType>();
             services.AddTransient<WorkoutExerciseType>();
             services.AddTransient<WorkshopType>();
             services.AddTransient<WorkoutType>();
+            services.AddTransient<UserType>();
+            services.AddTransient<ExerciseIdWithSetsType>();
+            
+            // Input types
+            services.AddTransient<ExerciseCreateInputType>();
+            services.AddTransient<TrainingScheduleCreateInputType>();
+
             
             // Schema setup
             services.AddTransient<SchemaQuery>();
