@@ -12,6 +12,7 @@ namespace Core.Schema
         {
             Field(o => o.Id);
             Field(o => o.Name);
+            
             Field<ListGraphType<TrainingScheduleExerciseType>, IEnumerable<Exercise>>()  
                 .Name("exercises")
                 .Resolve(ctx => trainingScheduleService.GetExercisesForTrainingScheduleByIdAsync(ctx.Source.Id)); 

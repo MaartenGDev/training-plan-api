@@ -11,6 +11,8 @@ namespace DataContext.Models.Dto
         {
             Id = model.ExerciseId;
             Name = model.Exercise.Name;
+            Description = model.Exercise.Description;
+            ImagePath = model.Exercise.ImagePath;
             Category = model.Exercise.Category;
             Workouts = model.Exercise.Workouts;
             Workshops = model.Exercise.Workshops;
