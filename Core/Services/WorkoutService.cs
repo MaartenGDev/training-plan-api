@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,6 +26,15 @@ namespace Core.Services
                 .ThenInclude(x => x.Exercise)
                 .ThenInclude(x => x.Category)
                 .ToListAsync();
+        }
+        
+        public Task<Workout> GetWorkoutAsync(int id)
+        {
+            return _context.Workouts
+                .Include(x => x.Exercises)
+                .ThenInclude(x => x.Exercise)
+                .ThenInclude(x => x.Category)
+                .SingleAsync(w => w.Id == id);
         }
         
         public Task<Workout> CreateAsync(Workout workout)

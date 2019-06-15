@@ -27,6 +27,17 @@ namespace Core.Schema
                 "workouts",
                 resolve: context => workoutService.GetWorkoutsAsync()
             );
+            
+            
+            FieldAsync<ExerciseType>(
+                "exercise",
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<IntGraphType>> {Name="id"}),
+                resolve: async context => {
+                    return await context.TryAsyncResolve(
+                        async c=> await exercises.GetExerciseByIdAsync(c.GetArgument<int>("id"))
+                    );
+                }
+            );
         }
     }
 }
