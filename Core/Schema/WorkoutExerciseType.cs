@@ -1,3 +1,4 @@
+using System;
 using DataContext.Models;
 using DataContext.Models.Dto;
 using GraphQL.Types;
@@ -12,7 +13,7 @@ namespace Core.Schema
             Field(o => o.Name);
             Field(o => o.Description);
             Field(o => o.ImagePath);
-            Field(o => o.DateTime);
+            Field(o => o.DateTime, false, typeof(DateTimeGraphType));
             Field(o => o.Sets);
             Field<ExerciseCategoryType>("category", resolve: context => context.Source.Category);
         }
