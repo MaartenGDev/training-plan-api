@@ -52,10 +52,12 @@ namespace Web
             services.AddTransient<WorkoutType>();
             services.AddTransient<UserType>();
             services.AddTransient<ExerciseIdWithSetsType>();
+            services.AddTransient<ExerciseIdWithSetsAndDateType>();
             
             // Input types
             services.AddTransient<ExerciseCreateInputType>();
             services.AddTransient<TrainingScheduleCreateInputType>();
+            services.AddTransient<WorkoutCreateInputType>();
 
             
             // Schema setup

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Core.Schema.Data;
+using Core.Schema.Data.Dto;
 using Core.Services;
 using DataContext.Models;
 using GraphQL.Types;
@@ -10,7 +11,7 @@ namespace Core.Schema
 {
     public class SchemaMutation : ObjectGraphType<object>
     {
-        public SchemaMutation(ExerciseService exercises, TrainingScheduleService trainingSchedules,
+        public SchemaMutation(ExerciseService exercises, TrainingScheduleService trainingSchedules, WorkoutService workoutService,
             UserService userService)
         {
             Name = "Mutation";
@@ -32,7 +33,7 @@ namespace Core.Schema
                     {Name = "trainingSchedule"}),
                 resolve: async context =>
                 {
-                    var input = context.GetArgument<TrainingSchedule>("trainingSchedule");
+                    var input = context.GetArgument<TrainingScheduleCreateDto>("trainingSchedule");
 
                     var trainingSchedule = new TrainingSchedule
                     {
@@ -49,6 +50,32 @@ namespace Core.Schema
 
                     return await context.TryAsyncResolve(async c =>
                         await trainingSchedules.CreateAsync(trainingSchedule));
+                }
+            );
+            
+            FieldAsync<WorkoutType>(
+                "createWorkout",
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<WorkoutCreateInputType>>
+                    {Name = "workout"}),
+                resolve: async context =>
+                {
+                    var input = context.GetArgument<WorkoutCreateDto>("workout");
+
+                    var trainingSchedule = new Workout
+                    {
+                        User = await userService.GetUserByIdAsync(1), 
+                        Exercises = input.Exercises
+                            .Select(
+                                exercise => new WorkoutExercise
+                                {
+                                    ExerciseId = exercise.Id,
+                                    Sets = exercise.Sets,
+                                    DateTime = exercise.DateTime
+                                }).ToList()
+                    };
+
+                    return await context.TryAsyncResolve(async c =>
+                        await workoutService.CreateAsync(trainingSchedule));
                 }
             );
         }

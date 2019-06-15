@@ -13,8 +13,6 @@ namespace DataContext.Models
         public int UserId { get; set; }
         [Required]
         public User User { get; set; }
-        [NotMapped]
-        public List<ExerciseIdWithSetsDto> ExercisesWithSets { get; set; }
         public List<TrainingScheduleExercise> TrainingScheduleExercises { get; set; }
     }
 }

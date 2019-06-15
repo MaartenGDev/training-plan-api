@@ -26,5 +26,13 @@ namespace Core.Services
                 .ThenInclude(x => x.Category)
                 .ToListAsync();
         }
+        
+        public Task<Workout> CreateAsync(Workout workout)
+        {
+            _context.Workouts.Add(workout);
+            _context.SaveChangesAsync();
+
+            return Task.FromResult(workout);
+        }
     }
 }

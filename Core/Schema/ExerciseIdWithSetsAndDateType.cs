@@ -5,12 +5,13 @@ using GraphQL.Types;
 
 namespace Core.Schema
 {
-    public class ExerciseIdWithSetsType : InputObjectGraphType<ExerciseIdWithSetsDto>
+    public class ExerciseIdWithSetsAndDateType : InputObjectGraphType<ExerciseIdWithSetsAndDateDto>
     {
-        public ExerciseIdWithSetsType()
+        public ExerciseIdWithSetsAndDateType()
         {
             Field(o => o.Id);
             Field(o => o.Sets);
+            Field(o => o.DateTime);
         }
     }
 }

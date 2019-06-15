@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-
-namespace DataContext.Models.Dto
+namespace Core.Schema.Data.Dto
 {
     public class ExerciseIdWithSetsDto 
     {
