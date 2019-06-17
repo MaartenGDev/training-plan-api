@@ -13,6 +13,7 @@ namespace DataContext.Data
         public DbSet<Workshop> Workshops { get; set; }
         public DbSet<TrainingSchedule> TrainingSchedules { get; set; }
         public DbSet<Workout> Workouts { get; set; }
+        public DbSet<Journey> Journeys { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -26,6 +27,9 @@ namespace DataContext.Data
                 .HasKey(e => e.Id);
             
             modelBuilder.Entity<Workshop>()
+                .HasKey(w => w.Id);
+            
+            modelBuilder.Entity<Journey>()
                 .HasKey(w => w.Id);
             
             modelBuilder.Entity<TrainingSchedule>()
@@ -42,6 +46,9 @@ namespace DataContext.Data
             
             modelBuilder.Entity<WorkshopExercise>()
                 .HasKey(w => new {w.WorkshopId, w.ExerciseId});
+            
+            modelBuilder.Entity<JourneyWorkshop>()
+                .HasKey(w => new {w.JourneyId, w.WorkshopId});
         }
     }
 }

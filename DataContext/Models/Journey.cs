@@ -3,12 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace DataContext.Models
 {
-    public class Workshop
+    public class Journey
     {
         public int Id { get; set; }
         [Required]
         public string Name { get; set; }
-        public List<WorkshopExercise> Exercises { get; set; }
-        public List<JourneyWorkshop> Journeys { get; set; }
+        public List<JourneyWorkshop> Workshops { get; set; }
     }
 }
