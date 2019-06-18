@@ -1,5 +1,5 @@
 # TrainingPlan
-Application to demo database created for ISE project
+Application for [TrainingPlan](https://github.com/MaartenGDev/training-plan) app project
 
 ## Setup
 1. Open `Web` project
