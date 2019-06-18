@@ -26,5 +26,17 @@ namespace Core.Services
                 .ThenInclude(x => x.Category)
                 .ToListAsync();
         }
+        
+        
+        public IEnumerable<WorkshopExerciseDto> GetExercisesForWorkshopIdAsync(int workshopId)
+        {
+            return _context.Workshops
+                .Include(x => x.Exercises)
+                .ThenInclude(x => x.Exercise)
+                .ThenInclude(e => e.Category)
+                .Single(e => e.Id == workshopId)
+                .Exercises.Select(x => new WorkshopExerciseDto(x))
+                .ToList();
+        }
     }
 }

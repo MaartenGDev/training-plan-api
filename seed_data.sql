@@ -8,6 +8,12 @@ DELETE
 FROM Exercises;
 DELETE
 FROM ExerciseCategory;
+DELETE
+FROM TrainingScheduleExercise;
+DELETE
+FROM TrainingSchedules;
+DELETE
+FROM Journeys;
 
 ALTER TABLE WorkshopExercise
     AUTO_INCREMENT = 1;
@@ -19,6 +25,13 @@ ALTER TABLE Exercises
     AUTO_INCREMENT = 1;
 ALTER TABLE ExerciseCategory
     AUTO_INCREMENT = 1;
+ALTER TABLE TrainingScheduleExercise
+    AUTO_INCREMENT = 1;
+ALTER TABLE TrainingSchedules
+    AUTO_INCREMENT = 1;
+ALTER TABLE Journeys
+    AUTO_INCREMENT = 1;
+
 
 INSERT INTO ExerciseCategory
     (Name)
@@ -696,7 +709,10 @@ VALUES ('Air squat (eventueel met kettlebell)',
         'https://s3-eu-west-1.amazonaws.com/training-plan.maartendev.me/assets/74.jpg', 8),
        ('Dumbbell curl',
         'Ga zitten of staan en neem in elke hand een halter en draai je handpalmen naar binnen. Buig je arm, draai de pols naar buiten voordat de onderarm horizontaal is. Hef je elleboog.',
-        'https://s3-eu-west-1.amazonaws.com/training-plan.maartendev.me/assets/73.jpg', 8);
+        'https://s3-eu-west-1.amazonaws.com/training-plan.maartendev.me/assets/73.jpg', 8),
+       ('Roeien',
+        'Ga op de roeimachine zitten en begin met roeien. Het programma start vanzelf.',
+        'https://s3-eu-west-1.amazonaws.com/training-plan.maartendev.me/assets/plank_knees.png', 10);
 
 INSERT INTO WorkshopExercise (WorkshopId, ExerciseId)
 VALUES (1, 2),
@@ -774,3 +790,14 @@ VALUES (1, 1),
        (1, 7),
        (1, 8),
        (1, 9);
+
+INSERT INTO TrainingSchedules(Name, UserId)
+VALUES ('Kracht', 1);
+
+INSERT INTO TrainingScheduleExercise (TrainingScheduleId, ExerciseId, Sets)
+VALUES 
+       (1, 218, '2km'),
+       (1, 62, '15-15-15'),
+       (1, 58, '15-15-15'),
+       (1, 48, '15-15-15'),
+       (1, 54, '15-15-15');

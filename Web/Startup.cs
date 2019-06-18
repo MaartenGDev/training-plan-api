@@ -40,6 +40,7 @@ namespace Web
             services.AddTransient<UserService>();
             services.AddTransient<ExerciseService>();
             services.AddTransient<TrainingScheduleService>();
+            services.AddTransient<JourneyService>();
             
             // Types
             services.AddTransient<UserType>();
@@ -49,11 +50,12 @@ namespace Web
             services.AddTransient<TrainingScheduleType>();
             services.AddTransient<WorkoutExerciseType>();
             services.AddTransient<WorkshopType>();
+            services.AddTransient<JourneyType>();
             services.AddTransient<WorkoutType>();
             services.AddTransient<UserType>();
             services.AddTransient<ExerciseIdWithSetsType>();
             services.AddTransient<ExerciseIdWithSetsAndDateType>();
-            
+
             // Input types
             services.AddTransient<ExerciseCreateInputType>();
             services.AddTransient<TrainingScheduleCreateInputType>();
