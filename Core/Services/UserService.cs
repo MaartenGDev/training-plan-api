@@ -16,26 +16,10 @@ namespace Core.Services
             _context = context;
         }
 
-        public Task<List<User>> GetUsersAsync()
-        {
-            return _context.Users
-                .ToListAsync();
-        }
-        
-    
         public Task<User> GetUserByIdAsync(int userId)
         {
             return _context.Users
                 .SingleAsync(x => x.Id == userId);
-        }
-       
-
-        public Task<User> CreateAsync(User user)
-        {
-            _context.Users.Add(user);
-            _context.SaveChangesAsync();
-
-            return Task.FromResult(user);
         }
     }
 }
