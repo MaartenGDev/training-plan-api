@@ -52,7 +52,6 @@ namespace Web
             services.AddTransient<WorkshopType>();
             services.AddTransient<JourneyType>();
             services.AddTransient<WorkoutType>();
-            services.AddTransient<UserType>();
             services.AddTransient<ExerciseIdWithSetsType>();
             services.AddTransient<ExerciseIdWithSetsAndDateType>();
 

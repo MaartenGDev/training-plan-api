@@ -34,7 +34,7 @@ namespace Core.Services
                 .Include(x => x.Exercises)
                 .ThenInclude(x => x.Exercise)
                 .ThenInclude(x => x.Category)
-                .SingleAsync(w => w.Id == id);
+                .SingleOrDefaultAsync(w => w.Id == id);
         }
         
         public Task<Workout> CreateAsync(Workout workout)

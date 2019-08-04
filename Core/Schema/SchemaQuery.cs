@@ -44,12 +44,23 @@ namespace Core.Schema
                 }
             );
             
+            
             FieldAsync<JourneyType>(
                 "journey",
                 arguments: new QueryArguments(new QueryArgument<NonNullGraphType<IntGraphType>> {Name="id"}),
                 resolve: async context => {
                     return await context.TryAsyncResolve(
                         async c=> await journeyService.GetJourneyByIdAsync(c.GetArgument<int>("id"))
+                    );
+                }
+            );
+            
+            FieldAsync<WorkoutType>(
+                "workout",
+                arguments: new QueryArguments(new QueryArgument<NonNullGraphType<IntGraphType>> {Name="id"}),
+                resolve: async context => {
+                    return await context.TryAsyncResolve(
+                        async c=> await workoutService.GetWorkoutAsync(c.GetArgument<int>("id"))
                     );
                 }
             );

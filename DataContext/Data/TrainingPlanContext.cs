@@ -9,7 +9,9 @@ namespace DataContext.Data
         {}
 
         public DbSet<User> Users { get; set; }
+
         public DbSet<Exercise> Exercises { get; set; }
+
         public DbSet<Workshop> Workshops { get; set; }
         public DbSet<TrainingSchedule> TrainingSchedules { get; set; }
         public DbSet<Workout> Workouts { get; set; }
