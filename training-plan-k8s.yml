@@ -30,6 +30,6 @@ spec:
     spec:
       containers:
       - name: training-plan-app
-        image: $DOCKER_IMAGE_URL:$GIT_COMMIT
+        image: $DOCKER_IMAGE_URL:$GIT_COMMIT_SHORT
         ports:
         - containerPort: 80
