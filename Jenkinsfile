@@ -29,17 +29,21 @@ spec:
   stages {
         stage('Build') {
             steps {
-                script {
-                    app = docker.build(DOCKER_IMAGE_NAME)
+                container('docker') {
+                    script {
+                        app = docker.build(DOCKER_IMAGE_NAME)
+                    }
                 }
             }
         }
         stage('Push Docker Image') {
             steps {
-                script {
-                    docker.withRegistry(DOCKER_REGISTRY, 'docker_registry_login') {
-                        app.push("${env.GIT_COMMIT}")
-                        app.push("latest")
+                container('docker') {
+                    script {
+                        docker.withRegistry(DOCKER_REGISTRY, 'docker_registry_login') {
+                            app.push("${env.GIT_COMMIT}")
+                            app.push("latest")
+                        }
                     }
                 }
             }
