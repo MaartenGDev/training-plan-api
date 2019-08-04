@@ -84,8 +84,6 @@ namespace Web
             app.UseMetricServer();
             app.UseHttpMetrics();
 
-            app.UseExceptionHandler();
-            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

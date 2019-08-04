@@ -46,6 +46,7 @@ spec:
                     script {
                         docker.withRegistry("https://${DOCKER_REGISTRY}", 'ecr:eu-west-1:docker_registry_login') {
                             app.push("${env.GIT_COMMIT_SHORT}")
+                            app.push("latest")
                         }
                     }
                 }
