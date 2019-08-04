@@ -52,7 +52,7 @@ spec:
             steps {
                 kubernetesDeploy(
                     kubeconfigId: 'kubeconfig',
-                    configs: 'train-schedule-kube.yml',
+                    configs: 'training-plan-k8s.yml',
                     enableConfigSubstitution: true
                 )
             }
