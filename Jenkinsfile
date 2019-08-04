@@ -40,7 +40,7 @@ spec:
             steps {
                 container('docker') {
                     script {
-                        docker.withRegistry("${DOCKER_REGISTRY}", 'ecr:eu-west-1:docker_registry_login') {
+                        docker.withRegistry("https://${DOCKER_REGISTRY}", 'ecr:eu-west-1:docker_registry_login') {
                             app.push("${env.GIT_COMMIT}")
                             app.push("latest")
                         }
