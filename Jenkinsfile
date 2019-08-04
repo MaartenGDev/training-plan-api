@@ -22,6 +22,10 @@ spec:
     }
   }
   environment {
+    GIT_COMMIT_SHORT = sh(
+                  script: "printf \$(git rev-parse --short ${GIT_COMMIT})",
+                  returnStdout: true
+    ) 
     DOCKER_IMAGE_NAME = "maartendev/training-plan-api"
     DOCKER_REGISTRY= "340535573758.dkr.ecr.eu-west-1.amazonaws.com"
     DOCKER_IMAGE_URL = "${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE_NAME}"
@@ -31,7 +35,7 @@ spec:
             steps {
                 container('docker') {
                     script {
-                        app = docker.build(DOCKER_IMAGE_NAME)
+                        app = docker.build("${DOCKER_IMAGE_NAME}:${env.GIT_COMMIT_SHORT}")
                     }
                 }
             }
@@ -41,7 +45,7 @@ spec:
                 container('docker') {
                     script {
                         docker.withRegistry("https://${DOCKER_REGISTRY}", 'ecr:eu-west-1:docker_registry_login') {
-                            app.push("${env.GIT_COMMIT}")
+                            app.push("${env.GIT_COMMIT_SHORT}")
                             app.push("latest")
                         }
                     }
