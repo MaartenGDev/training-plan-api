@@ -1,11 +1,32 @@
 pipeline {
-    agent any
-    environment {
-        DOCKER_IMAGE_NAME = "maartendev/training-plan-api"
-        DOCKER_REGISTRY= "340535573758.dkr.ecr.eu-west-1.amazonaws.com"
-        DOCKER_IMAGE_URL = "${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE_NAME}"
+  agent {
+    kubernetes {
+      label 'mypod'
+      yaml """
+apiVersion: v1
+kind: Pod
+spec:
+  containers:
+  - name: docker
+    image: docker:1.11
+    command: ['cat']
+    tty: true
+    volumeMounts:
+    - name: dockersock
+      mountPath: /var/run/docker.sock
+  volumes:
+  - name: dockersock
+    hostPath:
+      path: /var/run/docker.sock
+"""
     }
-    stages {
+  }
+  environment {
+    DOCKER_IMAGE_NAME = "maartendev/training-plan-api"
+    DOCKER_REGISTRY= "340535573758.dkr.ecr.eu-west-1.amazonaws.com"
+    DOCKER_IMAGE_URL = "${env.DOCKER_REGISTRY}/${env.DOCKER_IMAGE_NAME}"
+  }
+  stages {
         stage('Build') {
             steps {
                 script {
