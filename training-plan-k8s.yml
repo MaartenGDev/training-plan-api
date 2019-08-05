@@ -27,6 +27,8 @@ spec:
     metadata:
       labels:
         app: training-plan-app
+      annotations:
+        prometheus.io/scrape: 'true'
     spec:
       containers:
       - name: training-plan-app
