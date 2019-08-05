@@ -2,6 +2,8 @@ kind: Service
 apiVersion: v1
 metadata:
   name: training-plan-svc
+  annotations:
+    prometheus.io/scrape: 'true'
 spec:
   type: NodePort
   selector:
@@ -27,8 +29,6 @@ spec:
     metadata:
       labels:
         app: training-plan-app
-      annotations:
-        prometheus.io/scrape: 'true'
     spec:
       containers:
       - name: training-plan-app
