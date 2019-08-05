@@ -5,6 +5,7 @@ pipeline {
       yaml """
 apiVersion: v1
 kind: Pod
+namespace: 'jenkins'
 spec:
   containers:
   - name: docker
