@@ -1,7 +1,15 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: training-plan
+
+---
+
 kind: Service
 apiVersion: v1
 metadata:
   name: training-plan-svc
+  namespace: training-plan
   annotations:
     prometheus.io/scrape: 'true'
 spec:
@@ -18,6 +26,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: training-plan-app-deployment
+  namespace: training-plan
   labels:
     app: training-plan-app
 spec:
@@ -25,6 +34,7 @@ spec:
   selector:
     matchLabels:
       app: training-plan-app
+      tier: web
   template:
     metadata:
       labels:
@@ -32,6 +42,106 @@ spec:
     spec:
       containers:
       - name: training-plan-app
+        env:
+          - name: DB
+            value: training-plan-db
+          - name: ConnectionStrings__MyConnection
+            valueFrom:
+              secretKeyRef:
+                name: mysql-pass
+                key: password
         image: $DOCKER_IMAGE_URL:$GIT_COMMIT_SHORT
         ports:
         - containerPort: 80
+          
+---
+
+## Mysql
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  namespace: training-plan
+  name: training-plan-db-pv
+  labels:
+    app: training-plan
+    tier: persistence
+spec:
+  storageClassName: standard
+  capacity:
+    storage: 8Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/data/training-plan-db"
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: training-plan-db-pv-claim
+  namespace: training-plan
+  labels:
+    app: training-plan
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: training-plan-db
+  namespace: training-plan
+  labels:
+    app: training-plan
+spec:
+  ports:
+    - port: 3306
+  selector:
+    app: training-plan
+    tier: mysql
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: training-plan-db
+  namespace: training-plan
+  labels:
+    app: training-plan
+spec:
+  selector:
+    matchLabels:
+      app: training-plan
+      tier: mysql
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      labels:
+        app: training-plan
+        tier: mysql
+    spec:
+      containers:
+        - image: mysql:5.6
+          name: mysql
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: training-plan-pass
+                  key: password
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-persistent-storage
+          persistentVolumeClaim:
+            claimName: training-plan-db-pv-claim
+
