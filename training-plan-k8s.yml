@@ -48,7 +48,7 @@ spec:
         - containerPort: 80
         volumeMounts:
           - name: secrets
-            mountPath: /app/appsettings.Development.json
+            mountPath: /app
             readOnly: true
       volumes:
         - name: secrets
@@ -84,6 +84,7 @@ metadata:
   labels:
     app: training-plan
 spec:
+  storageClassName: "standard"
   accessModes:
     - ReadWriteOnce
   resources:
