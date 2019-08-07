@@ -5,6 +5,29 @@ metadata:
 
 ---
 
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  annotations:
+    kubernetes.io/ingress.class: haproxy
+    certmanager.k8s.io/cluster-issuer: letsencrypt-prod
+  name: prod-ingress
+  namespace: training-plan
+spec:
+  tls:
+    - hosts:
+        - training-plan-api.maartendev.me
+      secretName: letsencrypt-prod
+  rules:
+    - host: training-plan-api.maartendev.me
+      http:
+        paths:
+          - backend:
+              serviceName: training-plan-svc
+              servicePort: 80
+              
+---
+
 kind: Service
 apiVersion: v1
 metadata:
