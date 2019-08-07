@@ -42,21 +42,20 @@ spec:
     spec:
       containers:
       - name: training-plan-app
-        env:
-          - name: DB
-            value: training-plan-db
-          - name: ConnectionStrings__MyConnection
-            valueFrom:
-              secretKeyRef:
-                name: mysql-pass
-                key: password
         image: $DOCKER_IMAGE_URL:$GIT_COMMIT_SHORT
         ports:
         - containerPort: 80
+        volumeMounts:
+          - name: secrets
+            mountPath: /app/appsettings.Development.json
+            readOnly: true
+      volumes:
+        - name: secrets
+          secret:
+            secretName: training-app-appsettings
           
 ---
-
-## Mysql
+## Database
 kind: PersistentVolume
 apiVersion: v1
 metadata:
@@ -89,6 +88,9 @@ spec:
   resources:
     requests:
       storage: 8Gi
+  selector:
+    matchLabels:
+      app: training-plan-db-pv
 ---
 
 apiVersion: v1
@@ -103,7 +105,7 @@ spec:
     - port: 3306
   selector:
     app: training-plan
-    tier: mysql
+    tier: db
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -116,24 +118,21 @@ spec:
   selector:
     matchLabels:
       app: training-plan
-      tier: mysql
+      tier: db
   strategy:
     type: Recreate
   template:
     metadata:
       labels:
         app: training-plan
-        tier: mysql
+        tier: db
     spec:
       containers:
         - image: mysql:5.6
           name: mysql
           env:
-            - name: MYSQL_ROOT_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: training-plan-pass
-                  key: password
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: 'yes'
           ports:
             - containerPort: 3306
               name: mysql
