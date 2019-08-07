@@ -39,6 +39,7 @@ spec:
     metadata:
       labels:
         app: training-plan-app
+        tier: web
     spec:
       containers:
       - name: training-plan-app
@@ -90,7 +91,8 @@ spec:
       storage: 8Gi
   selector:
     matchLabels:
-      app: training-plan-db-pv
+      app: training-plan
+      tier: persistence
 ---
 
 apiVersion: v1
