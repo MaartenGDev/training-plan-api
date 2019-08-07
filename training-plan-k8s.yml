@@ -48,7 +48,7 @@ spec:
         - containerPort: 80
         volumeMounts:
           - name: secrets
-            mountPath: /app
+            mountPath: /app/secrets
             readOnly: true
       volumes:
         - name: secrets
