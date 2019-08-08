@@ -21,7 +21,7 @@ namespace Web
             WebHost.CreateDefaultBuilder(args)
                 .ConfigureAppConfiguration((hostingContext, config) =>
                 {
-                    config.AddJsonFile($"secrets/appsettings.Development.json", false);
+                    config.AddJsonFile($"secrets/appsettings.Development.json", true);
                 })
                 .UseStartup<Startup>();
     }

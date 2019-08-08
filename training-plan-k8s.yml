@@ -11,7 +11,7 @@ metadata:
   annotations:
     kubernetes.io/ingress.class: haproxy
     certmanager.k8s.io/cluster-issuer: letsencrypt-prod
-  name: prod-ingress
+  name: training-plan-ingress
   namespace: training-plan
 spec:
   tls:
